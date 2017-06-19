@@ -1,0 +1,12 @@
+urban_rural_data/
+maps_example/
+output/
+
+
+*.Rproj
+.Rproj*
+*.pdf
+*.Rout
+*.Rdata
+*.Rhistory
+US_County_Level_Presidential_Results_08-16.xlsx
