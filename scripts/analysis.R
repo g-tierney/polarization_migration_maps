@@ -69,9 +69,11 @@ merged_mig_votes$dif_pct_dem_B_less_A <- merged_mig_votes$pct_dem_B - merged_mig
 sum(merged_mig_votes$dif_pct_dem_B_less_A*merged_mig_votes$flow_from_A_to_B_est/sum(merged_mig_votes$flow_from_A_to_B_est,na.rm=T),na.rm=T)
 
 #Number moving to a more democratic county
-sum(merged_mig_votes$flow_from_A_to_B_est[merged_mig_votes$dif_pct_dem_B_less_A > 0])
+num_more_dem <- sum(merged_mig_votes$flow_from_A_to_B_est[merged_mig_votes$dif_pct_dem_B_less_A > 0])
 #number moving to a less democratic county
-sum(merged_mig_votes$flow_from_A_to_B_est[merged_mig_votes$dif_pct_dem_B_less_A < 0])
+num_less_dem <- sum(merged_mig_votes$flow_from_A_to_B_est[merged_mig_votes$dif_pct_dem_B_less_A < 0])
+c(num_more_dem,num_less_dem)
+num_more_dem/(num_less_dem+num_more_dem)*100
 
 #find average destination pct_dem (A to B)
 county_state$average_to_pct_dem <- sapply(county_state$state_county_code_A,FUN = average_to_value,
@@ -94,7 +96,7 @@ slope <- round(lm$coefficients[2],2)
 
 pdf("output/scatter_plot.pdf")
 plot(county_state$pct_dem_A,county_state$average_to_pct_dem,
-     main = "Figure 4\nDestination and Origin Democratic Vote Percentages \nCounty Level",
+     main = "Figure 1\nDestination and Origin Democratic Vote Percentages \nCounty Level",
      xlab = "Origin Democratic Vote Share",ylab = "Average Destination Democratic Vote Share")
 abline(lm, col = "red",lwd = 2)
 abline(a=0,b=1, col= "blue",lwd = 2)
@@ -112,11 +114,11 @@ county.shp <- merge(county.shp,county_state,
 #Plot county maps
 
 pdf("output/maps.pdf")
-plot_county_results("pct_dem_A","Figure 1\nDemocratic Vote Share of County", fixed_median = 50,
+plot_county_results("pct_dem_A","Figure 2\nDemocratic Vote Share of County", fixed_median = 50,
                     sub_title = "Data are from 2008 presidential election.")
-plot_county_results("average_to_pct_dem","Figure 2\nAverage Destination Democratic Vote Share for Out-Migration",fixed_median = 50,
+plot_county_results("average_to_pct_dem","Figure 3\nAverage Destination Democratic Vote Share for Out-Migration",fixed_median = 50,
                     sub_title = "Data are from 2008 presidential election and 2008-2012 migration.")
-plot_county_results("dif_dest_home","Figure 3\nDifference Between Destination and Home Democratic Vote Share", fixed_median = 0,
+plot_county_results("dif_dest_home","Figure 4\nDifference Between Destination and Home Democratic Vote Share", fixed_median = 0,
                     sub_title = "Data are from 2008 presidential election and 2008-2012 migration.")
 dev.off()
 
