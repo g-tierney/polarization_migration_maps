@@ -94,7 +94,19 @@ lm <- lm(average_to_pct_dem ~ pct_dem_A, data = county_state)
 summary(lm)
 slope <- round(lm$coefficients[2],2)
 
+#pdf
 pdf("output/scatter_plot.pdf")
+plot(county_state$pct_dem_A,county_state$average_to_pct_dem,
+     main = "Figure 1\nDestination and Origin Democratic Vote Percentages \nCounty Level",
+     xlab = "Origin Democratic Vote Share",ylab = "Average Destination Democratic Vote Share")
+abline(lm, col = "red",lwd = 2)
+abline(a=0,b=1, col= "blue",lwd = 2)
+legend("bottomright",legend = c(paste0("Regression (slope of ",slope,")"),"Unity (slope of 1)"),col = c("red","blue"),
+       lwd = 2)
+dev.off()
+
+#jpeg
+jpeg("output/scatter_plot.jpeg")
 plot(county_state$pct_dem_A,county_state$average_to_pct_dem,
      main = "Figure 1\nDestination and Origin Democratic Vote Percentages \nCounty Level",
      xlab = "Origin Democratic Vote Share",ylab = "Average Destination Democratic Vote Share")
@@ -122,3 +134,15 @@ plot_county_results("dif_dest_home","Figure 4\nDifference Between Destination an
                     sub_title = "Data are from 2008 presidential election and 2008-2012 migration.")
 dev.off()
 
+jpeg("output/figure2.jpeg")
+plot_county_results("pct_dem_A","Figure 2\nDemocratic Vote Share of County", fixed_median = 50,
+                    sub_title = "Data are from 2008 presidential election.")
+dev.off()
+jpeg("output/figure3.jpeg")
+plot_county_results("average_to_pct_dem","Figure 3\nAverage Destination Democratic Vote Share for Out-Migration",fixed_median = 50,
+                    sub_title = "Data are from 2008 presidential election and 2008-2012 migration.")
+dev.off()
+jpeg("output/figure4.jpeg")
+plot_county_results("dif_dest_home","Figure 4\nDifference Between Destination and Home Democratic Vote Share", fixed_median = 0,
+                    sub_title = "Data are from 2008 presidential election and 2008-2012 migration.")
+dev.off()
